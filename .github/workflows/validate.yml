@@ -22,5 +22,13 @@ jobs:
       - name: Plugins (directory profile)
         run: |
           for plugin in horaizen-experiences horaizen-staff; do
-            claude plugin validate --profile directory "$plugin"
+            claude plugin validate --profile directory --strict "$plugin"
           done
+      - name: Release skill
+        run: claude plugin validate --strict .claude
+      - name: ChatGPT package
+        working-directory: openai/horaizen-experiences
+        run: |
+          python3 -c "import json; [json.load(open(f)) for f in ('plugin.json', 'mcp.json')]"
+          python3 -m zipfile -c "$RUNNER_TEMP/chatgpt.zip" plugin.json mcp.json skills assets
+          python3 -m zipfile -t "$RUNNER_TEMP/chatgpt.zip"
