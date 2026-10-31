@@ -7,7 +7,7 @@ Browse experiences from participating Horaizen operators, see public catalog pho
 Claude Code:
 
 ```
-/plugin install horaizen-experiences --marketplace horaizen-eu/claude-plugins
+/plugin install horaizen-experiences --marketplace horaizen-eu/horaizen-experiences-plugins
 ```
 
 Claude on the web or desktop: add `https://mcp.horaizenexperiences.com/mcp` as a custom connector to use the interactive picker.
@@ -27,6 +27,10 @@ No bookings, holds, payments, refunds, passenger details or staff data. Availabi
 - "Which experience operators can I browse?"
 - "Help me find an experience for tomorrow for two people."
 - "Quero ver os detalhes e fotografias de uma experiência."
+
+## Privacy
+
+https://www.horaizenexperiences.com/en/privacy-policy
 
 ## Support
 

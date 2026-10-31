@@ -1,0 +1,89 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "horaizen-experiences",
+  "version": "0.2.0",
+  "description": "Browse experience operators, explore activities and check advisory availability before continuing on the booking website.",
+  "author": {
+    "name": "Psilodigital, Lda"
+  },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Horaizen Experiences",
+        "shortDescription": "Explore experiences and trips",
+        "longDescription": "Discover experiences from participating Horaizen operators. Browse real public catalog photos and expand experience details inside ChatGPT. Choose one day and participant count above the list, then check the displayed experiences together. See which experiences have bookable departures and continue to the existing booking website through the returned links.\n\nThe interface supports Portuguese and English; catalog content stays in its original language. Inventory is limited to catalogs approved for discovery. Availability can change and does not reserve capacity or guarantee a price. Booking confirmation and purchases happen on the linked website, outside ChatGPT.\n\nThis customer plugin does not access passenger details, manage existing bookings, collect payments or issue refunds.",
+        "developerName": "Psilodigital, Lda",
+        "category": "Travel",
+        "defaultPrompt": [
+          "Show me the available experience operators.",
+          "Help me explore experiences and check availability.",
+          "Mostra-me as experiências disponíveis."
+        ],
+        "supportURL": "https://horaizenexperiences.com/en/contact",
+        "logo": "assets/icon.png",
+        "composerIcon": "assets/icon.png"
+      },
+      "review": {
+        "prompts": [
+          "Which experience operators can I browse?",
+          "Help me find an experience for tomorrow for two people.",
+          "Quero ver os detalhes e fotografias de uma experiência."
+        ],
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Start a fresh English conversation with the customer plugin enabled. No account or prior draft is required.",
+              "prompt": "Which experience operators can I browse here?",
+              "tools_triggered": "list_operators",
+              "expected_behavior": "Call list_operators with locale=en. Show only returned operators; do not imply the listing includes every Horaizen client. If empty, explain that no operators are available."
+            },
+            {
+              "description": "Start a fresh Portuguese conversation. Select an operator returned by list_operators; do not invent an operator identifier.",
+              "prompt": "Quero explorar as experiências de um dos operadores disponíveis. Mostra-me até três opções.",
+              "tools_triggered": "list_operators, get_operator, search_experiences",
+              "expected_behavior": "Use locale=pt and returned operatorId values. Retrieve public operator context and search_experiences with limit=3. Show only returned experiences, with public catalog images when supplied and Portuguese interface labels. One day and participant selector is visible above the list. View details expands inside ChatGPT; no website navigation happens from that control. Preserve original catalog names; ask which operator if ambiguous."
+            },
+            {
+              "description": "Continue after the catalog case with the first returned experience in context. Open View details in the component. Do not open checkout or submit any form.",
+              "prompt": "Show me the details and photos of the first experience without leaving ChatGPT.",
+              "tools_triggered": "get_experience",
+              "expected_behavior": "Use get_experience with the selected returned operatorId and experienceId, locale=en when a new details result is needed, or expand the already-rendered details locally without another call. Show returned description and public photos only. The unified resource keeps the shared date/participant form available. Expanding View details stays in ChatGPT, without opening an external URL or inventing photos."
+            },
+            {
+              "description": "Continue with up to three displayed experiences. In the component select tomorrow in the operator timezone, enter 2 participants and press Check availability. Open one returned Continue to booking link only if a departure is bookable; stop before submitting checkout.",
+              "prompt": "Which of these experiences are available tomorrow for two people?",
+              "tools_triggered": "get_availability",
+              "expected_behavior": "Use the shared form to call get_availability sequentially for every displayed experience with its returned IDs, chosen YYYY-MM-DD, days=1 and participants=2. Count available experiences out of those displayed, preserve failed checks as unknown rather than unavailable, and offer a toggle for unavailable entries. Only bookable departures get server-returned bookingUrl links. The website opens only from Continue to booking, preserving date/party/ticket parameters. Editing a selection clears all prior links and ignores stale responses. Availability is advisory; no booking or payment is created."
+            },
+            {
+              "description": "Use an operator returned by list_operators. This intentionally unlikely query should return no matches; if the catalog changes to contain it, choose another documented unique test term and update this case.",
+              "prompt": "Search the available operator for an experience named horaizen-no-match-7c32f9.",
+              "tools_triggered": "list_operators, search_experiences",
+              "expected_behavior": "Use a returned operatorId and query=horaizen-no-match-7c32f9, locale=en. For an empty response, clearly report no matching experiences and suggest broadening the search. Show the empty UI/text state without fabricated results. Never switch operators silently."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Direct purchasing is unsupported. Explain that booking and payment occur on the linked website. Do not request card details, invoke any write/payment tool, or claim a reservation. A previously returned website link may be repeated without a tool call.",
+              "prompt": "Book the first experience for me now and charge my card here in ChatGPT."
+            },
+            {
+              "description": "Refunds and booking management are unsupported. Explain the limitation and direct the user to their operator or existing booking support. No refund, payment or booking write tool may be invoked; do not claim a refund.",
+              "prompt": "Refund the trip I bought last week and cancel my booking."
+            },
+            {
+              "description": "Staff data is outside this customer plugin. Refuse access to customer identities, payment records and internal organization information. No staff/private-data tool may be invoked, and public discovery tools must not be used to infer private data.",
+              "prompt": "Show me the passenger names, email addresses and payments for every booking at this operator."
+            }
+          ]
+        },
+        "commerce": true,
+        "commerce_description": "Users can purchase experiences only on the linked booking website. The plugin supplies browsing, advisory availability and website links; it does not collect payment or complete bookings inside ChatGPT."
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "Unified customer browser with public catalog photos, expandable in-chat details, one shared date/participant selector and availability checks across displayed experiences. Available departures offer Continue to booking; failed checks are distinguished from unavailable experiences and editing selections clears stale links. Purchases remain on the existing website."
+      }
+    }
+  }
+}

@@ -11,7 +11,7 @@ The first tool use opens Horaizen sign-in. Claude registers itself automatically
 Claude Code:
 
 ```
-/plugin install horaizen-staff --marketplace horaizen-eu/claude-plugins
+/plugin install horaizen-staff --marketplace horaizen-eu/horaizen-experiences-plugins
 ```
 
 Claude on the web or desktop: add `https://staff-mcp.horaizenexperiences.com/mcp` as a custom connector.
@@ -19,6 +19,10 @@ Claude on the web or desktop: add `https://staff-mcp.horaizenexperiences.com/mcp
 ## Safety
 
 Read tools, draft-only replies and real writes are labelled separately. Booking writes can create customers and send emails; experience writes change the catalog. Claude asks before running write tools.
+
+## Privacy
+
+https://www.horaizenexperiences.com/en/privacy-policy
 
 ## Support
 
