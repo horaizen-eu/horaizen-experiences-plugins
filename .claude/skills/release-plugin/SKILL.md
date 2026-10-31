@@ -16,7 +16,7 @@ This repo (`horaizen-eu/horaizen-experiences-plugins`) is the `horaizen` Claude 
 
 `<name>` below is the tag prefix without `--v`. For the ChatGPT package, its version is `version` in `openai/horaizen-experiences/plugin.json` (no `.claude-plugin/` folder), and the differences are called out in each step.
 
-Triggering this skill is the go-ahead to open the release PR, merge it once CI is green, tag it and publish the GitHub release. Stop and ask only where a step below says so.
+Triggering this skill is the go-ahead to prepare, validate and open the release PR. Merging is the one step that always needs the user's explicit confirmation in chat (step 6); after they confirm, tag and publish without asking again. Otherwise stop and ask only where a step below says so.
 
 ## 1. Preflight
 
@@ -102,7 +102,9 @@ gh pr create --base main --title "release(<name>): v<version>" --body "<changelo
 gh pr checks --watch
 ```
 
-When `validate` passes, merge with `gh pr merge --squash --delete-branch`. If it fails, read the log (`gh run view --log-failed`), fix on the branch and push again. Do not merge a red PR.
+If `validate` fails, read the log (`gh run view --log-failed`), fix on the branch and push again. Do not merge a red PR.
+
+When it passes, show the user the PR link, versions and changelog lines and ask them to confirm the merge. On their yes, run `gh pr merge --squash --delete-branch`, or let them merge it in GitHub and continue once `gh pr view --json state` reports `MERGED`.
 
 ## 7. Tag and publish
 
