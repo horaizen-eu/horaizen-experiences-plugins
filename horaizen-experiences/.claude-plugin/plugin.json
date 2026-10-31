@@ -1,0 +1,19 @@
+{
+  "name": "horaizen-experiences",
+  "version": "0.2.0",
+  "description": "Browse experience operators, explore activities and check advisory availability before continuing on the booking website.",
+  "author": {
+    "name": "Psilodigital, Lda",
+    "url": "https://horaizenexperiences.com"
+  },
+  "homepage": "https://horaizenexperiences.com",
+  "keywords": [
+    "travel",
+    "experiences",
+    "tours",
+    "availability",
+    "mcp-apps"
+  ],
+  "license": "MIT",
+  "repository": "https://github.com/horaizen-eu/claude-plugins"
+}

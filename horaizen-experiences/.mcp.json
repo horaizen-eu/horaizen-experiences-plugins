@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "horaizen-experiences": {
+      "type": "http",
+      "url": "https://mcp.horaizenexperiences.com/mcp"
+    }
+  }
+}

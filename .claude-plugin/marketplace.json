@@ -1,0 +1,24 @@
+{
+  "name": "horaizen",
+  "owner": {
+    "name": "Psilodigital, Lda",
+    "url": "https://horaizenexperiences.com"
+  },
+  "metadata": {
+    "description": "Official Claude plugins for Horaizen Experiences: customer experience discovery and staff booking operations."
+  },
+  "plugins": [
+    {
+      "name": "horaizen-experiences",
+      "source": "./horaizen-experiences",
+      "description": "Browse Horaizen experience operators, view photos and details, and check advisory availability before booking on the operator's website.",
+      "category": "travel"
+    },
+    {
+      "name": "horaizen-staff",
+      "source": "./horaizen-staff",
+      "description": "For Horaizen operator staff: read bookings, availability and experiences, draft replies and manage bookings for one consented organization.",
+      "category": "productivity"
+    }
+  ]
+}
